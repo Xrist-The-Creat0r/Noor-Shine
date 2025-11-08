@@ -28,15 +28,33 @@ exports.handler = async (event, context) => {
         const orderData = JSON.parse(event.body);
 
         // Validate required fields
+        // Note: shipping can be 0 (free shipping), so we check for undefined/null/empty string explicitly
         const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'postalCode', 'country', 'items', 'subtotal', 'shipping', 'total'];
-        const missingFields = requiredFields.filter(field => !orderData[field]);
+        const missingFields = requiredFields.filter(field => {
+            const value = orderData[field];
+            // For numeric fields (shipping, subtotal, total), 0 is valid
+            if (field === 'shipping' || field === 'subtotal' || field === 'total') {
+                return value === undefined || value === null || (typeof value !== 'number' && value === '');
+            }
+            // For items array, check if it's an array with length > 0
+            if (field === 'items') {
+                return !Array.isArray(value) || value.length === 0;
+            }
+            // For other fields, check if they exist and are not empty
+            return value === undefined || value === null || value === '';
+        });
 
         if (missingFields.length > 0) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
                     success: false,
-                    error: `Champs manquants: ${missingFields.join(', ')}`
+                    error: `Champs manquants: ${missingFields.join(', ')}`,
+                    receivedData: {
+                        hasShipping: orderData.shipping !== undefined,
+                        shippingValue: orderData.shipping,
+                        shippingType: typeof orderData.shipping
+                    }
                 }),
             };
         }

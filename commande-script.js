@@ -95,19 +95,25 @@ async function handleOrderSubmission() {
     const shippingCost = subtotal > 200 ? 0 : 30;
     const total = subtotal + shippingCost;
     
-    // Prepare order data
+    // Prepare order data - ensure numeric values are numbers, not strings
     const orderData = {
         ...formData,
         items: cart.map(item => ({
             name: item.name,
             category: item.category,
-            price: item.price,
-            quantity: item.quantity
+            price: parseFloat(item.price),
+            quantity: parseInt(item.quantity)
         })),
-        subtotal: subtotal,
-        shipping: shippingCost,
-        total: total
+        subtotal: parseFloat(subtotal.toFixed(2)),
+        shipping: parseFloat(shippingCost.toFixed(2)),
+        total: parseFloat(total.toFixed(2))
     };
+    
+    // Debug: Log order data before sending
+    console.log('Données de commande à envoyer:', orderData);
+    console.log('Type de shipping:', typeof orderData.shipping, 'Valeur:', orderData.shipping);
+    console.log('Type de subtotal:', typeof orderData.subtotal, 'Valeur:', orderData.subtotal);
+    console.log('Type de total:', typeof orderData.total, 'Valeur:', orderData.total);
     
     // Disable submit button
     const submitButton = form.querySelector('.submit-button');
@@ -128,6 +134,9 @@ async function handleOrderSubmission() {
         
         const result = await response.json();
         
+        // Debug: Log response
+        console.log('Réponse du serveur:', result);
+        
         if (result.success) {
             alert(`Merci pour votre commande !\n\nVotre commande a été enregistrée avec succès.\nNuméro de commande: ${result.orderId}`);
             
@@ -137,11 +146,23 @@ async function handleOrderSubmission() {
             // Redirect to home
             window.location.href = 'index.html';
         } else {
+            // Log detailed error info
+            console.error('Erreur détaillée:', result);
+            if (result.receivedData) {
+                console.error('Données reçues par le serveur:', result.receivedData);
+            }
             throw new Error(result.error || 'Erreur lors de l\'enregistrement');
         }
     } catch (error) {
-        console.error('Erreur:', error);
-        alert('Erreur lors de l\'enregistrement de la commande. Veuillez réessayer.\n\n' + error.message);
+        console.error('Erreur complète:', error);
+        console.error('Données envoyées:', orderData);
+        
+        let errorMessage = 'Erreur lors de l\'enregistrement de la commande. Veuillez réessayer.';
+        if (error.message) {
+            errorMessage += '\n\n' + error.message;
+        }
+        
+        alert(errorMessage);
         
         // Re-enable submit button
         if (submitButton) {
