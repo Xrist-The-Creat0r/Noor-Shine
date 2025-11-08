@@ -1,0 +1,95 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Bague Or Classique",
+      "price": 89.99,
+      "image": "https://images.unsplash.com/photo-1605100804769-15e0c80c5a0e?w=400&h=400&fit=crop",
+      "description": "Une bague en or élégante et intemporelle, parfaite pour toutes les occasions.",
+      "category": "Bagues",
+      "inStock": true
+    },
+    {
+      "id": 2,
+      "name": "Bague Vintage Rose",
+      "price": 109.99,
+      "image": "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?w=400&h=400&fit=crop",
+      "description": "Bague vintage avec motif rose délicat, alliant charme rétro et modernité.",
+      "category": "Bagues",
+      "inStock": true
+    },
+    {
+      "id": 3,
+      "name": "Bague Solitaire Diamant",
+      "price": 249.99,
+      "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&h=400&fit=crop",
+      "description": "Bague solitaire avec diamant étincelant, symbole d'élégance et de raffinement.",
+      "category": "Bagues",
+      "inStock": true
+    },
+    {
+      "id": 4,
+      "name": "Bracelet Or Délicat",
+      "price": 79.99,
+      "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=400&fit=crop",
+      "description": "Bracelet en or fin et délicat, idéal pour un look raffiné au quotidien.",
+      "category": "Bracelets",
+      "inStock": true
+    },
+    {
+      "id": 5,
+      "name": "Bracelet à Charme",
+      "price": 119.99,
+      "image": "https://images.unsplash.com/photo-1611955167811-4711904bb5f0?w=400&h=400&fit=crop",
+      "description": "Bracelet personnalisable avec charmes élégants, pour exprimer votre style unique.",
+      "category": "Bracelets",
+      "inStock": true
+    },
+    {
+      "id": 6,
+      "name": "Collier Perle Goutte",
+      "price": 129.99,
+      "image": "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=400&fit=crop",
+      "description": "Collier avec perle en forme de goutte, apportant une touche de sophistication.",
+      "category": "Colliers",
+      "inStock": true
+    },
+    {
+      "id": 7,
+      "name": "Collier Or Superposé",
+      "price": 149.99,
+      "image": "https://images.unsplash.com/photo-1596944924616-7b38e7cf8e8e?w=400&h=400&fit=crop",
+      "description": "Collier à chaînes superposées en or, créant un effet de profondeur élégant.",
+      "category": "Colliers",
+      "inStock": false
+    },
+    {
+      "id": 8,
+      "name": "Boucles d'Oreilles Diamant",
+      "price": 199.99,
+      "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=400&h=400&fit=crop",
+      "description": "Boucles d'oreilles avec diamants brillants, pour illuminer votre visage.",
+      "category": "Boucles d'Oreilles",
+      "inStock": true
+    },
+    {
+      "id": 9,
+      "name": "Boucles d'Oreilles Cercles",
+      "price": 69.99,
+      "image": "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400&h=400&fit=crop",
+      "description": "Boucles d'oreilles cercles modernes, pour un style contemporain et audacieux.",
+      "category": "Boucles d'Oreilles",
+      "inStock": true
+    },
+    {
+      "id": 10,
+      "name": "Bracelet Tennis",
+      "price": 149.99,
+      "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&h=400&fit=crop",
+      "description": "Bracelet tennis classique avec pierres précieuses, élégant et raffiné.",
+      "category": "Bracelets",
+      "inStock": true
+    }
+  ]
+}
+

@@ -125,8 +125,12 @@ const categoryProducts = {
 // Cart state
 let cart = [];
 
+// Products data (will be loaded from products.json)
+let allProducts = [];
+
 // Initialize page
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadProductsFromJSON();
     renderLatestDrops();
     updateCartCount();
     
@@ -137,6 +141,31 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCartCount();
     }
 });
+
+// Load products from products.json
+async function loadProductsFromJSON() {
+    try {
+        const response = await fetch('products.json');
+        if (response.ok) {
+            const data = await response.json();
+            allProducts = data.products || [];
+            
+            // Update categoryProducts for backward compatibility
+            updateCategoryProducts();
+        }
+    } catch (error) {
+        console.error('Erreur lors du chargement de products.json:', error);
+        // Fallback to hardcoded products if JSON fails
+    }
+}
+
+// Update categoryProducts from allProducts
+function updateCategoryProducts() {
+    categoryProducts.bagues = allProducts.filter(p => p.category === 'Bagues');
+    categoryProducts.bracelets = allProducts.filter(p => p.category === 'Bracelets');
+    categoryProducts.colliers = allProducts.filter(p => p.category === 'Colliers');
+    categoryProducts.bouclesOreilles = allProducts.filter(p => p.category === 'Boucles d\'Oreilles');
+}
 
 // Get random product from array
 function getRandomProduct(products) {
