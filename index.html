@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOOR & SHINE - Élégance Quotidienne</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>NOOR & SHINE</h1>
+                </div>
+                <a href="panier.html" class="cart-icon-container">
+                    <svg class="cart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h2 class="hero-tagline">Élégance Quotidienne</h2>
+            <p class="hero-subtitle">Découvrez des pièces intemporelles qui illuminent votre style</p>
+        </div>
+    </section>
+
+    <!-- Latest Drops Section -->
+    <section class="latest-drops-section">
+        <div class="container">
+            <h2 class="section-title">Dernières Sorties</h2>
+            <div class="products-grid" id="latestDropsGrid">
+                <!-- Random products will be dynamically generated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Sections -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="categories-grid">
+                <a href="bagues.html" target="_blank" class="category-card">
+                    <div class="category-image">
+                        <div class="category-icon">💍</div>
+                    </div>
+                    <h3 class="category-name">Bagues</h3>
+                    <p class="category-description">Découvrez notre collection de bagues</p>
+                </a>
+                <a href="bracelets.html" target="_blank" class="category-card">
+                    <div class="category-image">
+                        <div class="category-icon">⌚</div>
+                    </div>
+                    <h3 class="category-name">Bracelets</h3>
+                    <p class="category-description">Explorez nos bracelets élégants</p>
+                </a>
+                <a href="colliers.html" target="_blank" class="category-card">
+                    <div class="category-image">
+                        <div class="category-icon">📿</div>
+                    </div>
+                    <h3 class="category-name">Colliers</h3>
+                    <p class="category-description">Admirez nos colliers raffinés</p>
+                </a>
+                <a href="boucles-oreilles.html" target="_blank" class="category-card">
+                    <div class="category-image">
+                        <div class="category-icon">✨</div>
+                    </div>
+                    <h3 class="category-name">Boucles d'Oreilles</h3>
+                    <p class="category-description">Parcourez nos boucles d'oreilles</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>NOOR & SHINE</h3>
+                    <p>Élégance Quotidienne</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 NOOR & SHINE. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

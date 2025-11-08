@@ -1,0 +1,23 @@
+{
+  "name": "noor-shine-netlify",
+  "version": "1.0.0",
+  "description": "NOOR & SHINE - Site e-commerce avec Netlify Functions et Google Sheets",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "keywords": [
+    "jewelry",
+    "ecommerce",
+    "netlify"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "googleapis": "^126.0.1"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}
+
