@@ -116,6 +116,9 @@ async function handleOrderSubmission() {
         submitButton.textContent = 'Enregistrement...';
     }
     
+    // Debug: Log order data before sending
+    console.log('Données de commande à envoyer:', orderData);
+    
     try {
         // Send to Netlify function
         const response = await fetch('/.netlify/functions/submit-order', {
@@ -127,6 +130,9 @@ async function handleOrderSubmission() {
         });
         
         const result = await response.json();
+        
+        // Debug: Log response
+        console.log('Réponse du serveur:', result);
         
         if (result.success) {
             alert(`Merci pour votre commande !\n\nVotre commande a été enregistrée avec succès.\nNuméro de commande: ${result.orderId}`);
@@ -140,7 +146,8 @@ async function handleOrderSubmission() {
             throw new Error(result.error || 'Erreur lors de l\'enregistrement');
         }
     } catch (error) {
-        console.error('Erreur:', error);
+        console.error('Erreur complète:', error);
+        console.error('Données envoyées:', orderData);
         alert('Erreur lors de l\'enregistrement de la commande. Veuillez réessayer.\n\n' + error.message);
         
         // Re-enable submit button

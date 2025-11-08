@@ -29,7 +29,10 @@ exports.handler = async (event, context) => {
 
         // Validate required fields
         const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'postalCode', 'country', 'items', 'subtotal', 'shipping', 'total'];
-        const missingFields = requiredFields.filter(field => !orderData[field]);
+        const missingFields = requiredFields.filter(field => {
+            // Check if field exists in orderData (including 0 and false values)
+            return orderData[field] === undefined || orderData[field] === null || orderData[field] === '';
+        });
 
         if (missingFields.length > 0) {
             return {
@@ -37,6 +40,17 @@ exports.handler = async (event, context) => {
                 body: JSON.stringify({
                     success: false,
                     error: `Champs manquants: ${missingFields.join(', ')}`
+                }),
+            };
+        }
+        
+        // Additional validation for items array
+        if (!Array.isArray(orderData.items) || orderData.items.length === 0) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    success: false,
+                    error: 'Le panier est vide'
                 }),
             };
         }
