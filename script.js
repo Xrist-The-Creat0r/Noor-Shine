@@ -127,11 +127,13 @@ let cart = [];
 
 // Products data (will be loaded from products.json)
 let allProducts = [];
+let categoriesData = {};
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', async () => {
     await loadProductsFromJSON();
     renderLatestDrops();
+    renderCategories();
     updateCartCount();
     
     // Load cart from localStorage
@@ -149,6 +151,7 @@ async function loadProductsFromJSON() {
         if (response.ok) {
             const data = await response.json();
             allProducts = data.products || [];
+            categoriesData = data.categories || {};
             
             // Update categoryProducts for backward compatibility
             updateCategoryProducts();
@@ -169,71 +172,97 @@ function updateCategoryProducts() {
 
 // Get random product from array
 function getRandomProduct(products) {
+    if (!products || products.length === 0) return null;
     return products[Math.floor(Math.random() * products.length)];
 }
 
-// Render latest drops with random products
+// Render latest drops with products marked as showInLatest
 function renderLatestDrops() {
     const latestDropsGrid = document.getElementById('latestDropsGrid');
     if (!latestDropsGrid) return;
     
     latestDropsGrid.innerHTML = '';
 
-    // Get one random product from each category
-    const randomBague = getRandomProduct(categoryProducts.bagues);
-    const randomBracelet = getRandomProduct(categoryProducts.bracelets);
-    const randomCollier = getRandomProduct(categoryProducts.colliers);
-    const randomBoucles = getRandomProduct(categoryProducts.bouclesOreilles);
+    // Get products marked as showInLatest
+    const latestProducts = allProducts.filter(p => p.showInLatest === true);
+    
+    // If no products marked, fallback to one random product from each category
+    if (latestProducts.length === 0) {
+        const randomBague = getRandomProduct(categoryProducts.bagues);
+        const randomBracelet = getRandomProduct(categoryProducts.bracelets);
+        const randomCollier = getRandomProduct(categoryProducts.colliers);
+        const randomBoucles = getRandomProduct(categoryProducts.bouclesOreilles);
+        
+        const randomProducts = [randomBague, randomBracelet, randomCollier, randomBoucles].filter(p => p);
+        
+        randomProducts.forEach(product => {
+            const productCard = createLatestProductCard(product);
+            latestDropsGrid.appendChild(productCard);
+        });
+    } else {
+        // Display products marked as showInLatest (limit to 4)
+        latestProducts.slice(0, 4).forEach(product => {
+            const productCard = createLatestProductCard(product);
+            latestDropsGrid.appendChild(productCard);
+        });
+    }
+}
 
-    const randomProducts = [randomBague, randomBracelet, randomCollier, randomBoucles];
-
-    randomProducts.forEach(product => {
-        const productCard = document.createElement('div');
-        productCard.className = 'product-card';
-        productCard.innerHTML = `
-            <div class="product-image">
-                <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
-            </div>
-            <div class="product-info">
-                <div class="product-category">${product.category}</div>
-                <div class="product-name">${product.name}</div>
-                <div class="product-price">${product.price.toFixed(2)} DH</div>
-                <button class="add-to-cart-btn" onclick="addToCartFromLatest(${product.id})">
-                    Ajouter au Panier
-                </button>
-            </div>
-        `;
-        latestDropsGrid.appendChild(productCard);
-    });
+// Create product card for latest drops
+function createLatestProductCard(product) {
+    const productCard = document.createElement('div');
+    productCard.className = 'product-card';
+    productCard.innerHTML = `
+        <div class="product-image">
+            <img src="${product.image}" alt="${product.name}" onerror="this.style.display='none'">
+        </div>
+        <div class="product-info">
+            <div class="product-category">${product.category}</div>
+            <div class="product-name">${product.name}</div>
+            <div class="product-price">${product.price.toFixed(2)} DH</div>
+            <button class="add-to-cart-btn" onclick="addToCartFromLatest(${product.id})">
+                Ajouter au Panier
+            </button>
+        </div>
+    `;
+    return productCard;
 }
 
 // Add to cart from latest drops
 function addToCartFromLatest(productId) {
-    // Find product in all categories
-    let product = null;
-    for (const category in categoryProducts) {
-        product = categoryProducts[category].find(p => p.id === productId);
-        if (product) break;
+    // Find product in allProducts
+    const product = allProducts.find(p => p.id === productId);
+    
+    if (!product) {
+        console.error('Produit non trouvé:', productId);
+        return;
     }
     
-    if (product) {
-        const existingItem = cart.find(item => item.id === productId);
-        
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            cart.push({
-                ...product,
-                quantity: 1
-            });
-        }
-        
-        // Save to localStorage
-        localStorage.setItem('noorShineCart', JSON.stringify(cart));
-        
-        updateCartCount();
-        showAddToCartFeedback();
+    if (!product.inStock) {
+        alert('Ce produit est en rupture de stock.');
+        return;
     }
+    
+    const existingItem = cart.find(item => item.id === productId);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            category: product.category,
+            price: product.price,
+            image: product.image,
+            quantity: 1
+        });
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('noorShineCart', JSON.stringify(cart));
+    
+    updateCartCount();
+    showAddToCartFeedback();
 }
 
 // Update cart count
@@ -256,5 +285,40 @@ function showAddToCartFeedback() {
             cartIcon.style.transform = 'scale(1)';
         }, 200);
     }
+}
+
+// Render categories with images from JSON
+function renderCategories() {
+    const categoriesGrid = document.getElementById('categoriesGrid');
+    if (!categoriesGrid) return;
+    
+    // Category URLs mapping
+    const categoryUrls = {
+        'Bagues': 'bagues.html',
+        'Bracelets': 'bracelets.html',
+        'Colliers': 'colliers.html',
+        'Boucles d\'Oreilles': 'boucles-oreilles.html'
+    };
+    
+    categoriesGrid.innerHTML = '';
+    
+    // Render each category
+    Object.keys(categoryUrls).forEach(categoryKey => {
+        const category = categoriesData[categoryKey];
+        if (!category) return;
+        
+        const categoryCard = document.createElement('a');
+        categoryCard.href = categoryUrls[categoryKey];
+        categoryCard.target = '_blank';
+        categoryCard.className = 'category-card';
+        categoryCard.innerHTML = `
+            <div class="category-image">
+                <img src="${category.image}" alt="${category.name}" onerror="this.style.display='none'">
+            </div>
+            <h3 class="category-name">${category.name}</h3>
+            <p class="category-description">${category.description}</p>
+        `;
+        categoriesGrid.appendChild(categoryCard);
+    });
 }
 
