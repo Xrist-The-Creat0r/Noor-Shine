@@ -87,7 +87,7 @@ async function handleOrderSubmission() {
         address: document.getElementById('address').value,
         city: document.getElementById('city').value,
         postalCode: document.getElementById('postalCode').value,
-        country: document.getElementById('country').value
+        country: 'MA' // Morocco only
     };
     
     // Calculate totals
@@ -138,13 +138,11 @@ async function handleOrderSubmission() {
         console.log('Réponse du serveur:', result);
         
         if (result.success) {
-            alert(`Merci pour votre commande !\n\nVotre commande a été enregistrée avec succès.\nNuméro de commande: ${result.orderId}`);
-            
             // Clear cart
             localStorage.removeItem('noorShineCart');
             
-            // Redirect to home
-            window.location.href = 'index.html';
+            // Redirect to thank you page
+            window.location.href = 'merci.html';
         } else {
             // Log detailed error info
             console.error('Erreur détaillée:', result);
